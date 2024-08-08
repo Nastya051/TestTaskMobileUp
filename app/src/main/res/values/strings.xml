@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">TestTaskMobileUp</string>
+
+    <!--First screen-->
+    <string name="coinsList">Список криптовалют</string>
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>RUB</item>
+    </string-array>
+<!--    <string name="usd">USD</string>-->
+<!--    <string name="rub">RUB</string>-->
+
+    <!--Second screen-->
+    <string name="description">Описание</string>
+    <string name="categories">Категории</string>
+
+    <!--Common-->
+    <string name="someMistake">Произошла какая-то ошибка :( \nПопробуем снова?</string>
+    <string name="tryAgain">ПОПРОБОВАТЬ</string>
 </resources>
