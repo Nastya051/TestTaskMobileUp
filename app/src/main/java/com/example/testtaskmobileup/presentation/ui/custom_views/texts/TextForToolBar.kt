@@ -1,4 +1,4 @@
-package com.example.testtaskmobileup.presentation.ui.custom_views
+package com.example.testtaskmobileup.presentation.ui.custom_views.texts
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

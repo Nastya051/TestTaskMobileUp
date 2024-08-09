@@ -36,5 +36,11 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.75.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.roboto_regular)),
+        fontWeight = FontWeight.W400,
+        fontSize = 14.sp,
+        lineHeight = 16.41.sp
     )
 )

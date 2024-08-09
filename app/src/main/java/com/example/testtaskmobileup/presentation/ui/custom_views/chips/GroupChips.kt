@@ -1,4 +1,4 @@
-package com.example.testtaskmobileup.presentation.ui.custom_views
+package com.example.testtaskmobileup.presentation.ui.custom_views.chips
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

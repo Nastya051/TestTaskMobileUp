@@ -7,8 +7,11 @@
         <item>USD</item>
         <item>RUB</item>
     </string-array>
-<!--    <string name="usd">USD</string>-->
-<!--    <string name="rub">RUB</string>-->
+
+    <string name="usd">$ %1$s</string>
+    <string name="rub">₽ %1$s</string>
+    <string name="plus">+ %1$s%%</string>
+    <string name="minus">- %1$s%%</string>
 
     <!--Second screen-->
     <string name="description">Описание</string>

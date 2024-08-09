@@ -10,7 +10,10 @@ private val LightColorScheme = lightColorScheme(
     primary = WhiteFF,
     primaryContainer = Orange00,
     secondary = Yellow25,
+    secondaryContainer = Grey9B,
     tertiary = Black00,
+    onPrimary = Green8F,
+    onSecondary = Red57,
     outline = Color.Transparent
 )
 

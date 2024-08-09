@@ -1,4 +1,4 @@
-package com.example.testtaskmobileup.presentation.ui.custom_views
+package com.example.testtaskmobileup.presentation.ui.custom_views.columns
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,9 +22,10 @@ import androidx.compose.ui.unit.dp
 import com.example.testtaskmobileup.R
 
 @Composable
-fun FailureColumn(modifier: Modifier = Modifier) {
+fun FailureColumn(modifier: Modifier = Modifier, onClickButton: () -> Unit) {
     Column(
-        modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Image(
@@ -42,7 +43,8 @@ fun FailureColumn(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(bottom = 30.dp)
         )
         Button(
-            onClick = { /*TODO*/ }, shape = RoundedCornerShape(4.dp),
+            onClick = { onClickButton() },
+            shape = RoundedCornerShape(4.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.primary
