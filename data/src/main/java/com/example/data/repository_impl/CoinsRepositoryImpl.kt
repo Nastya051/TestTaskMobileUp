@@ -1,9 +1,10 @@
 package com.example.data.repository_impl
 
 import com.example.data.services.interfaces.ApiServiceCoins
-import com.example.domain.models.CoinInMarket
-import com.example.domain.models.CurrentCoinData
 import com.example.domain.models.Result
+import com.example.domain.models.coins.CoinInMarket
+import com.example.domain.models.coins.CurrentCoinData
+import com.example.domain.models.coins.CurrentCoinDataWithContracts
 import com.example.domain.repository_interface.CoinsRepository
 import io.ktor.client.call.body
 import kotlinx.coroutines.flow.Flow
@@ -42,8 +43,8 @@ class CoinsRepositoryImpl(private val apiService: ApiServiceCoins) : CoinsReposi
                     200 -> {
                         try {
                             emit(value = Result.Success(value = response.body<CurrentCoinData>()))
-                        } catch (e: SerializationException) {
-                            emit(value = Result.Error(value = e.toString()))
+                        } catch (e: Exception) {
+                            emit(value = Result.Success(value = response.body<CurrentCoinDataWithContracts>()))
                         }
                     }
 

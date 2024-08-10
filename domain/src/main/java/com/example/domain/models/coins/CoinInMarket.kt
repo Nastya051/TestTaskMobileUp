@@ -1,7 +1,7 @@
-package com.example.domain.models
+package com.example.domain.models.coins
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoinInMarket (
@@ -57,10 +57,21 @@ data class CoinInMarket (
     val roi: Roi? = null,
     @SerialName("last_updated")
     val lastUpdated: String
-)
+) {
+    fun toCoinInMarketUi(): CoinInMarketUi {
+        return CoinInMarketUi(
+            id = id,
+            symbol = symbol,
+            name = name,
+            image = image,
+            currentPrice = currentPrice,
+            priceChangePercentage24H = priceChangePercentage24H
+        )
+    }
+}
 
 @Serializable
-data class Roi (
+data class Roi(
     @SerialName("times")
     val times: Double,
     @SerialName("currency")

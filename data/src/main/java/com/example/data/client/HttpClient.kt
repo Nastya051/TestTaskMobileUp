@@ -6,7 +6,6 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -19,7 +18,7 @@ import io.ktor.serialization.kotlinx.KotlinxSerializationConverter
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-private const val NETWORK_TIME_OUT = 6_000L
+private const val NETWORK_TIME_OUT = 20_000L
 
 val httpClientAndroid = HttpClient(Android) {
     install(ContentNegotiation) {
