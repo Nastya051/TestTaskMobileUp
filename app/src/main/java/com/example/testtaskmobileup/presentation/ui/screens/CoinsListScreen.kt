@@ -77,18 +77,11 @@ fun CoinsListScreen() {
                 ) {
                     items(coinsList.size) { coin ->
                         CoinInListCard(
-                            imageUrl = coinsList[coin].image,
-                            name = coinsList[coin].name,
-                            shortName = coinsList[coin].symbol,
-                            price = coinsList[coin].currentPrice,
-                            priceChange = coinsList[coin].priceChangePercentage24H,
+                            coin = coinsList[coin],
                             usd = selectedCurrency == currencies[0],
                             onClick = {
-                                navController.navigate(
-                                    Route.CoinDataScreen.withArgs(
-                                        coinsList[coin].id
-                                    )
-                                )
+                                navController.navigate(Route.CoinDataScreen
+                                    .withArgs(coinsList[coin].id))
                             }
                         )
                     }

@@ -21,14 +21,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.domain.models.coins.CoinInMarketUi
 import com.example.testtaskmobileup.R
 import java.util.Locale
 
 @Composable
 fun CoinInListCard(
-    modifier: Modifier = Modifier, imageUrl: String, name: String, shortName: String,
-    price: Double, priceChange: Double, usd: Boolean, onClick: () -> Unit
-    /*CoinUi*/
+    modifier: Modifier = Modifier,
+    coin: CoinInMarketUi,
+    usd: Boolean,
+    onClick: () -> Unit
+
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -43,7 +46,7 @@ fun CoinInListCard(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = rememberAsyncImagePainter(imageUrl),
+                    painter = rememberAsyncImagePainter(coin.image),
                     contentDescription = "Coin",
                     modifier = Modifier
                         .size(70.dp)
@@ -51,15 +54,16 @@ fun CoinInListCard(
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                     Text(
-                        text = name,
+                        text = coin.name,
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.W500),
+                            fontWeight = FontWeight.W500
+                        ),
                         color = MaterialTheme.colorScheme.tertiary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = shortName.uppercase(Locale.ROOT),
+                        text = coin.symbol.uppercase(Locale.ROOT),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.secondaryContainer,
                         maxLines = 1,
@@ -74,8 +78,11 @@ fun CoinInListCard(
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 16.dp)
             ) {
                 Text(
-                    text = if (usd) stringResource(id = R.string.usd, price.toSeparatedNumber())
-                    else stringResource(id = R.string.rub, price.toSeparatedNumber()),
+                    text = if (usd) stringResource(
+                        id = R.string.usd,
+                        coin.currentPrice.toSeparatedNumber()
+                    )
+                    else stringResource(id = R.string.rub, coin.currentPrice.toSeparatedNumber()),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W600),
                     color = MaterialTheme.colorScheme.tertiary,
                     maxLines = 1,
@@ -83,11 +90,16 @@ fun CoinInListCard(
                     textAlign = TextAlign.End
                 )
                 Text(
-                    text = if (priceChange < 0) stringResource(id = R.string.minus,
-                        (priceChange * (-1)).toRoundedUpDouble())
-                    else stringResource(id = R.string.plus, priceChange.toRoundedUpDouble()),
+                    text = if (coin.priceChangePercentage24H < 0) stringResource(
+                        id = R.string.minus,
+                        (coin.priceChangePercentage24H * (-1)).toRoundedUpDouble()
+                    )
+                    else stringResource(
+                        id = R.string.plus,
+                        coin.priceChangePercentage24H.toRoundedUpDouble()
+                    ),
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (priceChange < 0) MaterialTheme.colorScheme.onSecondary
+                    color = if (coin.priceChangePercentage24H < 0) MaterialTheme.colorScheme.onSecondary
                     else MaterialTheme.colorScheme.onPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -102,59 +114,40 @@ fun CoinInListCard(
 fun Double.toRoundedUpDouble(): String {
     val integerPart = this.toInt()
     var fractionalPart = this.toString().substringAfter(".")
-    var resultString = ""
 
     if (fractionalPart.length < 2) {
         fractionalPart = fractionalPart.plus("0")
     }
 
-    resultString = resultString.plus(integerPart)
-    resultString = resultString.plus(".")
-    resultString = resultString.plus(fractionalPart)
-    return resultString
+    return "$integerPart.${fractionalPart.subSequence(0, 2)}"
 }
 
 fun Double.toSeparatedNumber(): String {
-    val integerPart = this.toInt()
+    val integerPart = this.toInt().toString()
     var fractionalPart = this.toString().substringAfter(".")
-    val integerToString = integerPart.toString()
-    val array = integerToString.toList()
-    val remainder = array.size % 3//кол-во первых цифр до запятой
-    var countComma = array.size / 3//кол-во запятых
-    var countSymbolsToComma = 0//символов до запятой
+    var remainder = integerPart.length % 3//кол-во первых цифр до запятой
+    var countComma = integerPart.length / 3//кол-во запятых
     var resultString = ""
 
     if (fractionalPart.length < 2) {//докидываем нули, если потеряли при переводе в строку
         fractionalPart = fractionalPart.plus("0")
     }
 
-    if (array.size <= 3) {
+    if (integerPart.length <= 3) {
         return this.toRoundedUpDouble()
     }
 
-    for (i in 0..<remainder) {//записываем первые цифры до запятой
-        resultString = resultString.plus(array[i].toString())
-    }
-    resultString = resultString.plus(",")
+    if (remainder != 0)
+        resultString = "${integerPart.subSequence(0, remainder)},"
 
     while (countComma > 0) {//записываем по 3 цифры через запятую
-        for (rem in remainder..<array.size) {
-            resultString = resultString.plus(array[rem].toString())
-            countSymbolsToComma++
-
-            if (countSymbolsToComma > 2) {
-                if (rem == array.size - 1) {
-                    countComma--
-                } else {
-                    resultString = resultString.plus(",")
-                    countSymbolsToComma = 0
-                    countComma--
-                }
-            }
-        }
+        resultString += "${integerPart.subSequence(remainder, remainder + 3)}"
+        if (countComma > 1)
+            resultString += ","
+        remainder += 3
+        countComma--
     }
-    resultString = resultString.plus(".")
-    resultString = resultString.plus(fractionalPart)
+    resultString += ".$fractionalPart"
 
     return resultString
 }
