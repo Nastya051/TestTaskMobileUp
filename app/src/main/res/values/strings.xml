@@ -12,6 +12,7 @@
     <string name="rub">₽ %1$s</string>
     <string name="plus">+ %1$s%%</string>
     <string name="minus">- %1$s%%</string>
+    <string name="failOnRefresh">Произошла ошибка при загрузке</string>
 
     <!--Second screen-->
     <string name="description">Описание</string>

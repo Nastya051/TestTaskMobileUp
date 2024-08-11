@@ -35,6 +35,19 @@ class CoinsViewModel(
     private val _coinsList = MutableStateFlow(emptyList<CoinInMarketUi>().toMutableList())
     val coinsList: StateFlow<List<CoinInMarketUi>> = _coinsList.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> =_isRefreshing.asStateFlow()
+    fun updateIsRefreshing(value: Boolean){
+        _isRefreshing.update { value }
+    }
+
+    private val _wasRefreshing = MutableStateFlow(false)
+    val wasRefreshing: StateFlow<Boolean> =_wasRefreshing.asStateFlow()
+    fun updateWasRefreshing(value: Boolean){
+        _wasRefreshing.update { value }
+    }
+
+
     //second screen
     private val currentCoin = CurrentCoinDataUi(
         id = "",
@@ -46,6 +59,7 @@ class CoinsViewModel(
     private val _coinData = MutableStateFlow(currentCoin)
     val coinData: StateFlow<CurrentCoinDataUi> = _coinData.asStateFlow()
 
+
     //common
     private val _currentState = MutableStateFlow(ResponseState.LOADING)
     val currentState: StateFlow<ResponseState> = _currentState.asStateFlow()
@@ -56,7 +70,6 @@ class CoinsViewModel(
     }
 
     fun getCoinsList(typeCurrency: String) {
-        _coinsList.value.clear()
         if (!_connectionState.value)
             _currentState.update { ResponseState.FAILURE }
         else {
@@ -65,6 +78,7 @@ class CoinsViewModel(
                 response.collect {
                     when (it) {
                         is Result.Success<*> -> {
+                            _coinsList.value.clear()
                             val saved = it.copy().value as List<CoinInMarket>
                             saved.forEach { coin ->
                                 _coinsList.value.add(coin.toCoinInMarketUi())
